@@ -1,7 +1,8 @@
 import argparse, sys
 from . import pdfdiff
 
-from .constants import DEFAULT_VERBOSITY, MAX_VERBOSITY
+from .constants import DEFAULT_THRESHOLD, DEFAULT_VERBOSITY, DEFAULT_DPI
+from .constants import MAX_VERBOSITY
 
 def main():
 
@@ -33,14 +34,33 @@ def main():
         default=0,
         help="show more information (can be used {} times)".format(
             MAX_VERBOSITY - DEFAULT_VERBOSITY))
+    parser.add_argument('--threshold',
+        default=DEFAULT_THRESHOLD,
+        type=float,
+        help="PSNR threshold to consider a change significant, "
+             "higher is more sensitive (default: %(default)s)")
+    parser.add_argument('--dpi',
+        default=DEFAULT_DPI,
+        type=int,
+        help="resolution for the rasterised files (default: %(default)s)")
+    parser.add_argument('--time',
+        default=0,
+        type=int,
+        help="number of seconds to wait before discarding temporary files, "
+             "or 0 to immediately discard (hint: use -v)")
 
     args = parser.parse_args()
 
     assert args.silent == 0 or args.verbose == 0, "cannot be silent and verbose"
+    assert 1 <= args.dpi
 
     verbosity = DEFAULT_VERBOSITY + args.verbose - args.silent
 
-    if pdfdiff(args.a, args.b, verbosity=verbosity):
+    if pdfdiff(args.a, args.b,
+            verbosity=verbosity,
+            threshold=args.threshold,
+            dpi=args.dpi,
+            time_to_inspect=args.time):
         sys.exit(0)
     else:
         sys.exit(2)
