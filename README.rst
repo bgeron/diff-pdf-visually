@@ -32,7 +32,7 @@ Or use it from the command line:
 .. code-block:: shell
 
     $ pip3 install --user diff-pdf-visually
-    diff-pdf-visually a.pdf b.pdf
+    $ diff-pdf-visually a.pdf b.pdf
 
 How it works
 ============
