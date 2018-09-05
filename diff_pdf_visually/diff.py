@@ -5,18 +5,14 @@ Test if there is a significant difference between two PDFs using ImageMagick
 and pdftocairo.
 """
 
-DPI=50
-
 INFINITY = float('inf')
-SIGNIFICANCE=INFINITY
-
-VERB_PRINT_CMD=False
-VERB_PDFDIFF=1
-TIME_TO_INSPECT=0
 
 import os.path, pathlib, subprocess, sys, tempfile, time
+from .constants import DEFAULT_THRESHOLD, DEFAULT_VERBOSITY, DEFAULT_DPI
+from .constants import VERB_PRINT_REASON, VERB_PRINT_TMPDIR
+from .constants import VERB_PERPAGE, VERB_PRINT_CMD
 
-def pdftopng(sourcepath, destdir, basename):
+def pdftopng(sourcepath, destdir, basename, verbosity, dpi):
     """
     Invoke pdftocairo to convert the given PDF path to a PNG per page.
     Return a list of page numbers (as strings).
@@ -24,9 +20,9 @@ def pdftopng(sourcepath, destdir, basename):
     if [] != list(destdir.glob(basename + '*')):
         raise ValueError("destdir not clean: " + repr(destdir))
 
-    verbose_run(
+    verbose_run((verbosity > VERB_PRINT_CMD),
         [
-            'pdftocairo', '-png', '-r', str(DPI), str(sourcepath),
+            'pdftocairo', '-png', '-r', str(dpi), str(sourcepath),
             str(destdir / basename)
         ],
         stdout=subprocess.PIPE,
@@ -40,14 +36,14 @@ def pdftopng(sourcepath, destdir, basename):
     return [s[len(basename)+1:-4] for s in numbers]
 
 # returns a float, which can be inf
-def imgdiff(a, b, diff, log):
+def imgdiff(a, b, diff, log, print_cmds):
     assert a.is_file()
     assert b.is_file()
     assert not diff.exists()
     assert not log.exists()
 
     with log.open('wb') as f:
-        cmdresult = verbose_run(
+        cmdresult = verbose_run(print_cmds,
             [
                 'compare', '-verbose', '-metric', 'PSNR',
                 str(a), str(b), str(diff),
@@ -72,23 +68,24 @@ def imgdiff(a, b, diff, log):
     all_num = INFINITY if all_str == '0' else float(all_str)
     return all_num
 
-def is_significant(f):
-    return f < SIGNIFICANCE
-
-def pdfdiff(a, b):
+def pdfdiff(a, b,
+        threshold=DEFAULT_THRESHOLD,
+        verbosity=DEFAULT_VERBOSITY,
+        dpi=DEFAULT_DPI,
+        time_to_inspect=0):
     """Given two filenames, return whether the PDFs are sufficiently similar."""
     assert os.path.isfile(a), "file {} must exist".format(a)
     assert os.path.isfile(b), "file {} must exist".format(b)
 
     with tempfile.TemporaryDirectory(prefix="diffpdf") as d:
         p = pathlib.Path(d)
-        if VERB_PDFDIFF >= 2:
-            print("      Temporary directory: {}".format(p))
+        if verbosity >= VERB_PRINT_TMPDIR:
+            print("  Temporary directory: {}".format(p))
         # expand a
-        a_i = pdftopng(a, p, "a")
-        b_i = pdftopng(b, p, "b")
+        a_i = pdftopng(a, p, "a", verbosity=verbosity, dpi=dpi)
+        b_i = pdftopng(b, p, "b", verbosity=verbosity, dpi=dpi)
         if a_i != b_i:
-            if VERB_PDFDIFF >= 1:
+            if verbosity >= VERB_PRINT_REASON:
                 print("Different number of pages: {} vs {}", a_i, b_i)
             return False
         assert len(a_i) > 0
@@ -101,38 +98,33 @@ def pdfdiff(a, b):
             pagebpath = p / "b-{}.png".format(pageno)
             diffpath = p / "diff-{}.png".format(pageno)
             logpath = p / "log-{}.txt".format(pageno)
-            s = imgdiff(pageapath, pagebpath, diffpath, logpath)
-            if VERB_PDFDIFF >= 2:
-                print("Page {}: significance={}".format(pageno, s))
+            s = imgdiff(pageapath, pagebpath, diffpath, logpath, (verbosity > VERB_PRINT_CMD))
+            if verbosity >= VERB_PERPAGE:
+                print("- Page {}: significance={}".format(pageno, s))
 
             significances.append(s)
 
         min_significance = min(significances, default=INFINITY)
-        significant = is_significant(min_significance)
-        if VERB_PDFDIFF >= 1:
+        significant = (min_significance <= threshold)
+        if verbosity >= VERB_PRINT_REASON:
             freetext = "different" if significant else "the same"
             print("Min sig = {}, significant?={}. The PDFs are {}.".format(
                     min_significance, significant, freetext
                 ))
 
-        if TIME_TO_INSPECT > 0:
+        if time_to_inspect > 0:
             print(
                 "Waiting for {} seconds before removing temporary directory..."
-                .format(TIME_TO_INSPECT),
+                .format(time_to_inspect),
                 end='',
                 flush=True
             )
-            time.sleep(TIME_TO_INSPECT)
+            time.sleep(time_to_inspect)
             print(" done.")
 
         return not significant
 
-def verbose_run(args, *restargs, **kw):
-    if VERB_PRINT_CMD:
-        print("Running: {}".format(' '.join(args)), file=sys.stderr)
+def verbose_run(print_cmd, args, *restargs, **kw):
+    if print_cmd:
+        print("  Running: {}".format(' '.join(args)), file=sys.stderr)
     return subprocess.run(args, *restargs, **kw)
-
-def verbose_check_output(args, *restargs, **kw):
-    if VERB_PRINT_CMD:
-        print("Running: {}".format(' '.join(args)), file=sys.stderr)
-    return subprocess.check_output(args, *restargs, **kw)
