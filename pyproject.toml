@@ -3,9 +3,16 @@ name = "diff-pdf-visually"
 version = "0.1.0"
 description = "A simple script to test whether there is a significant difference between two PDFs using ImageMagick and pdftocairo."
 authors = ["Bram Geron <bram@bram.xyz>"]
+license = "MIT"
+readme = "README.rst"
+homepage = "https://github.com/bgeron/diff-pdf-visually"
+repository = "https://github.com/bgeron/diff-pdf-visually"
 
 [tool.poetry.dependencies]
 python = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
+
+[tool.poetry.scripts]
+diff-pdf-visually = 'diff-pdf-visually:__main__.main'
