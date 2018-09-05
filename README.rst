@@ -51,6 +51,8 @@ Status
 
 At the moment, this program/module works best for finding *whether* two PDFs are visually different.
 
+This project is licenced under the MIT licence.
+
 Does it work on Python 2?
 =========================
 
