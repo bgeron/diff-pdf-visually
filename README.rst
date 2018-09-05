@@ -49,6 +49,35 @@ We use ``pdftocairo`` to convert both PDFs to a series of PNG images in a tempor
 
 Call ``diff-pdf-visually`` without parameters (or run ``python3 -m diff_pdf_visually``) to see its command line arguments. Import it as ``diff_pdf_visually`` to use its functions from Python.
 
+There are some options that you can use either from the command line or from Python:
+
+.. code-block:: shell
+
+    $ diff-pdf-visually  -h
+    usage: diff-pdf-visually [-h] [--silent] [--verbose] [--threshold THRESHOLD]
+                             [--dpi DPI] [--time TIME]
+                             a.pdf b.pdf
+
+    Compare two PDFs visually. The exit code is 0 if they are the same, and 2 if
+    there are significant differences.
+
+    positional arguments:
+      a.pdf
+      b.pdf
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      --silent, -q          silence output (can be used only once)
+      --verbose, -v         show more information (can be used 2 times)
+      --threshold THRESHOLD
+                            PSNR threshold to consider a change significant,
+                            higher is more sensitive (default: 100)
+      --dpi DPI             resolution for the rasterised files (default: 50)
+      --time TIME           number of seconds to wait before discarding temporary
+                            files, or 0 to immediately discard (hint: use -v)
+
+These "temporary files" include a PNG image of where any differences are, per page, as well as the log output of ImageMagick.
+
 So what do you use this for?
 ============================
 
