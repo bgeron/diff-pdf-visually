@@ -15,4 +15,4 @@ python = "*"
 pytest = "^3.0"
 
 [tool.poetry.scripts]
-diff-pdf-visually = 'diff-pdf-visually:__main__.main'
+diff-pdf-visually = 'diff_pdf_visually:__main__.main'
