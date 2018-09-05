@@ -1,0 +1,11 @@
+[tool.poetry]
+name = "diff-pdf-visually"
+version = "0.1.0"
+description = "A simple script to test whether there is a significant difference between two PDFs using ImageMagick and pdftocairo."
+authors = ["Bram Geron <bram@bram.xyz>"]
+
+[tool.poetry.dependencies]
+python = "*"
+
+[tool.poetry.dev-dependencies]
+pytest = "^3.0"
