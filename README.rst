@@ -27,6 +27,13 @@ The strength of this script is that it's simple to use on the command line, and 
     # Returns True or False
     pdfdiff("a.pdf", "b.pdf")
 
+Or use it from the command line:
+
+.. code-block:: shell
+
+    $ pip3 install --user diff-pdf-visually
+    diff-pdf-visually a.pdf b.pdf
+
 How it works
 ============
 
