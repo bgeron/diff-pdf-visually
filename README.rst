@@ -27,7 +27,8 @@ The strength of this script is that it's simple to use on the command line, and 
     # Returns True or False
     pdfdiff("a.pdf", "b.pdf")
 
-.. rubric:: How it works
+How it works
+============
 
 We use ``pdftocairo`` to convert both PDFs to a series of PNG images in a temporary directory. The number of pages and the dimensions of the page must be exactly the same. Then we call ``compare`` from ImageMagick to check how similar they are; if one of the pages compares different above a certain threshold, then the PDFs are reported as different, otherwise they are reported the same.
 
@@ -35,18 +36,22 @@ We use ``pdftocairo`` to convert both PDFs to a series of PNG images in a tempor
 
 Call ``diff-pdf-visually`` without parameters (or run ``python3 -m diff_pdf_visually``) to see its command line arguments. Import it as ``diff_pdf_visually`` to use its functions from Python.
 
-.. rubric:: So what do you use this for?
+So what do you use this for?
+============================
 
 Personally, I've used this a couple of times to refactor my LaTeX documents: I just simplify or remove some macro definitions, and if nothing changes, apparently it's safe to make that change.
 
-.. rubric:: How to install this
+How to install this
+===================
 
 ``pip3 install diff-pdf-visually``
 
-.. rubric:: Status
+Status
+======
 
 At the moment, this program/module works best for finding *whether* two PDFs are visually different.
 
-.. rubric:: Does it work on Python 2?
+Does it work on Python 2?
+=========================
 
 I don't know! You tell me :D
