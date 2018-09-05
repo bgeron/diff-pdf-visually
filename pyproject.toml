@@ -9,7 +9,7 @@ homepage = "https://github.com/bgeron/diff-pdf-visually"
 repository = "https://github.com/bgeron/diff-pdf-visually"
 
 [tool.poetry.dependencies]
-python = "*"
+python = "^3.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
