@@ -3,6 +3,12 @@
 ``diff-pdf-visually``: Find visual differences between two PDFs
 ***************************************************************
 
+.. image:: https://img.shields.io/pypi/v/diff-pdf-visually.svg
+    :target: https://pypi.python.org/pypi/diff-pdf-visually/
+
+.. image:: https://img.shields.io/pypi/l/diff-pdf-visually.svg
+    :target: https://pypi.python.org/pypi/diff-pdf-visually/
+
 This script checks whether two PDFs are visually the same. So:
 
 - White text on a white background will be **ignored**.
