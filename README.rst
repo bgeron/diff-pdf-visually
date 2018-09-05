@@ -58,9 +58,5 @@ Status
 
 At the moment, this program/module works best for finding *whether* two PDFs are visually different.
 
-This project is licenced under the MIT licence.
+This project is licenced under the MIT licence. It does not work on Python 2, but patches are welcome if they are not too invasive.
 
-Does it work on Python 2?
-=========================
-
-I don't know! You tell me :D
