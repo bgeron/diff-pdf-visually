@@ -8,9 +8,11 @@ and pdftocairo.
 INFINITY = float('inf')
 
 import os.path, pathlib, subprocess, sys, tempfile, time
+from concurrent.futures import ThreadPoolExecutor
 from .constants import DEFAULT_THRESHOLD, DEFAULT_VERBOSITY, DEFAULT_DPI
 from .constants import VERB_PRINT_REASON, VERB_PRINT_TMPDIR
 from .constants import VERB_PERPAGE, VERB_PRINT_CMD, VERB_ROUGH_PROGRESS
+from .constants import DEFAULT_NUM_THREADS
 
 def pdftopng(sourcepath, destdir, basename, verbosity, dpi):
     """
@@ -72,7 +74,8 @@ def pdfdiff(a, b,
         threshold=DEFAULT_THRESHOLD,
         verbosity=DEFAULT_VERBOSITY,
         dpi=DEFAULT_DPI,
-        time_to_inspect=0):
+        time_to_inspect=0,
+        num_threads=DEFAULT_NUM_THREADS):
     """
     Return True if the PDFs are sufficiently similar.
 
@@ -89,9 +92,16 @@ def pdfdiff(a, b,
             print("  Temporary directory: {}".format(p))
         if verbosity >= VERB_ROUGH_PROGRESS:
             print("  Converting PDFs to an image per page...")
+
         # expand pdfs to pngs
-        a_i = pdftopng(a, p, "a", verbosity=verbosity, dpi=dpi)
-        b_i = pdftopng(b, p, "b", verbosity=verbosity, dpi=dpi)
+        with ThreadPoolExecutor(max_workers=num_threads) as pool:
+            a_i_ = pool.submit(pdftopng, a, p, "a", verbosity=verbosity, dpi=dpi)
+            b_i_ = pool.submit(pdftopng, b, p, "b", verbosity=verbosity, dpi=dpi)
+
+            # Wait for results
+            a_i = a_i_.result()
+            b_i = b_i_.result()
+
         if a_i != b_i:
             assert len(a_i) != len(b_i), "mishap with weird page numbers: {} vs {}".format(a_i, b_i)
             if verbosity >= VERB_PRINT_REASON:

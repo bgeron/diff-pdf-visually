@@ -7,6 +7,8 @@ DEFAULT_VERBOSITY = 1
 MAX_VERBOSITY = 3
 # Resolution (in dots per inch) in which to render pages
 DEFAULT_DPI = 50
+# Default number of parallel threads
+DEFAULT_NUM_THREADS = 2
 
 # Minimum verbosity for printing what the result is, and why
 VERB_PRINT_REASON=1
