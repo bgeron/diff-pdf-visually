@@ -10,6 +10,8 @@ DEFAULT_DPI = 50
 
 # Minimum verbosity for printing what the result is, and why
 VERB_PRINT_REASON=1
+# Minimum verbosity for doing sanity warnings
+VERB_WARN_SANITY=1
 # Minimum verbosity for printing what the temporary directory is
 VERB_PRINT_TMPDIR=2
 # Minimum verbosity for printing the significance for each page
