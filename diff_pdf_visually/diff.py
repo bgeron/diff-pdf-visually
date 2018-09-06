@@ -91,7 +91,7 @@ def pdfdiff(a, b,
         if verbosity >= VERB_PRINT_TMPDIR:
             print("  Temporary directory: {}".format(p))
         if verbosity >= VERB_ROUGH_PROGRESS:
-            print("  Converting PDFs to an image per page...")
+            print("  Converting each page of the PDFs to an image...")
 
         # expand pdfs to pngs
         with ThreadPoolExecutor(max_workers=num_threads) as pool:
