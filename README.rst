@@ -49,9 +49,7 @@ We use ``pdftocairo`` to convert both PDFs to a series of PNG images in a tempor
 
 Call ``diff-pdf-visually`` without parameters (or run ``python3 -m diff_pdf_visually``) to see its command line arguments. Import it as ``diff_pdf_visually`` to use its functions from Python.
 
-There are some options that you can use either from the command line or from Python:
-
-.. code-block:: shell
+There are some options that you can use either from the command line or from Python::
 
     $ diff-pdf-visually  -h
     usage: diff-pdf-visually [-h] [--silent] [--verbose] [--threshold THRESHOLD]
