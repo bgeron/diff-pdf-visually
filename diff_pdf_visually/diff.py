@@ -92,7 +92,7 @@ def pdfdiff(a, b,
         b_i = pdftopng(b, p, "b", verbosity=verbosity, dpi=dpi)
         if a_i != b_i:
             if verbosity >= VERB_PRINT_REASON:
-                print("Different number of pages: {} vs {}", a_i, b_i)
+                print("Different number of pages: {} vs {}".format(a_i, b_i))
             return False
         assert len(a_i) > 0
 
