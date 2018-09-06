@@ -10,7 +10,7 @@ INFINITY = float('inf')
 import os.path, pathlib, subprocess, sys, tempfile, time
 from .constants import DEFAULT_THRESHOLD, DEFAULT_VERBOSITY, DEFAULT_DPI
 from .constants import VERB_PRINT_REASON, VERB_PRINT_TMPDIR
-from .constants import VERB_PERPAGE, VERB_PRINT_CMD
+from .constants import VERB_PERPAGE, VERB_PRINT_CMD, VERB_ROUGH_PROGRESS
 
 def pdftopng(sourcepath, destdir, basename, verbosity, dpi):
     """
@@ -87,14 +87,20 @@ def pdfdiff(a, b,
         p = pathlib.Path(d)
         if verbosity >= VERB_PRINT_TMPDIR:
             print("  Temporary directory: {}".format(p))
-        # expand a
+        if verbosity >= VERB_ROUGH_PROGRESS:
+            print("  Converting PDFs to an image per page...")
+        # expand pdfs to pngs
         a_i = pdftopng(a, p, "a", verbosity=verbosity, dpi=dpi)
         b_i = pdftopng(b, p, "b", verbosity=verbosity, dpi=dpi)
         if a_i != b_i:
+            assert len(a_i) != len(b_i), "mishap with weird page numbers: {} vs {}".format(a_i, b_i)
             if verbosity >= VERB_PRINT_REASON:
-                print("Different number of pages: {} vs {}".format(a_i, b_i))
+                print("Different number of pages: {} vs {}".format(len(a_i), len(b_i)))
             return False
         assert len(a_i) > 0
+
+        if verbosity >= VERB_ROUGH_PROGRESS:
+            print("  PDFs have same number of pages. Checking each pair of converted images...")
 
         significances = []
 

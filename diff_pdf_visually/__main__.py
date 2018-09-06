@@ -27,7 +27,8 @@ def main():
     parser.add_argument('--silent', '-q',
         action='count',
         default=0,
-        help="silence output (can be used only once)")
+        help="silence output (can be used only once); the result can be found "
+             "in the exit code")
     assert DEFAULT_VERBOSITY==1
     parser.add_argument('--verbose', '-v',
         action='count',
