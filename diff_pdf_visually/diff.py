@@ -73,7 +73,13 @@ def pdfdiff(a, b,
         verbosity=DEFAULT_VERBOSITY,
         dpi=DEFAULT_DPI,
         time_to_inspect=0):
-    """Given two filenames, return whether the PDFs are sufficiently similar."""
+    """
+    Return True if the PDFs are sufficiently similar.
+
+    The name of this function is slightly confusing: it returns whether the
+    PDFs are *not* different.
+    """
+
     assert os.path.isfile(a), "file {} must exist".format(a)
     assert os.path.isfile(b), "file {} must exist".format(b)
 
