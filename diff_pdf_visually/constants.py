@@ -22,3 +22,6 @@ VERB_ROUGH_PROGRESS=1
 VERB_PERPAGE=2
 # Minimum verbosity for printing commands
 VERB_PRINT_CMD=3
+
+# Maximum number of differing pages to report
+MAX_REPORT_PAGENOS=5

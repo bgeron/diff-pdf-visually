@@ -12,7 +12,7 @@ from concurrent.futures import ThreadPoolExecutor
 from .constants import DEFAULT_THRESHOLD, DEFAULT_VERBOSITY, DEFAULT_DPI
 from .constants import VERB_PRINT_REASON, VERB_PRINT_TMPDIR
 from .constants import VERB_PERPAGE, VERB_PRINT_CMD, VERB_ROUGH_PROGRESS
-from .constants import DEFAULT_NUM_THREADS
+from .constants import DEFAULT_NUM_THREADS, MAX_REPORT_PAGENOS
 
 def pdftopng(sourcepath, destdir, basename, verbosity, dpi):
     """
@@ -75,7 +75,8 @@ def pdfdiff(a, b,
         verbosity=DEFAULT_VERBOSITY,
         dpi=DEFAULT_DPI,
         time_to_inspect=0,
-        num_threads=DEFAULT_NUM_THREADS):
+        num_threads=DEFAULT_NUM_THREADS,
+        max_report_pagenos=MAX_REPORT_PAGENOS):
     """
     Return True if the PDFs are sufficiently similar.
 
@@ -128,11 +129,24 @@ def pdfdiff(a, b,
 
         min_significance = min(significances, default=INFINITY)
         significant = (min_significance <= threshold)
+
+        largest_significances = sorted(
+            (sgf, pageno_minus_one+1)
+            for (pageno_minus_one, sgf) in enumerate(significances)
+            if sgf < INFINITY
+        )
+
         if verbosity >= VERB_PRINT_REASON:
             freetext = "different" if significant else "the same"
-            print("Min sig = {}, significant?={}. The PDFs are {}.".format(
-                    min_significance, significant, freetext
-                ))
+            print("Min sig = {}, significant?={}. The PDFs are {}.{}".format(
+                    min_significance, significant, freetext,
+                    '' if largest_significances == []
+                    else " The most different pages are: {}.".format(', '.join(
+                        "page {} (sgf. {})".format(pageno, sgf)
+                        for (sgf, pageno) in largest_significances[:max_report_pagenos]
+                    ))
+                )
+            )
 
         if time_to_inspect > 0:
             print(
