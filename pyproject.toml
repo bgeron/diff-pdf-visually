@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "diff-pdf-visually"
-version = "1.3.1"
+version = "1.3.2"
 description = "A simple script to test whether there is a significant difference between two PDFs using ImageMagick and pdftocairo."
 authors = ["Bram Geron <bram@bram.xyz>"]
 license = "MIT"
