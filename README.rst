@@ -72,7 +72,7 @@ There are some options that you can use either from the command line or from Pyt
                             higher is more sensitive (default: 100)
       --dpi DPI             resolution for the rasterised files (default: 50)
       --time TIME           number of seconds to wait before discarding temporary
-                            files, or 0 to immediately discard (hint: use -v)
+                            files, or 0 to immediately discard
 
 These "temporary files" include a PNG image of where any differences are, per page, as well as the log output of ImageMagick. If you want to get a feeling for thresholds, there are some example PDFs in the ``tests/`` directory.
 

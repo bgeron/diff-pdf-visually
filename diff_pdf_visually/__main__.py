@@ -48,7 +48,7 @@ def main():
         default=0,
         type=int,
         help="number of seconds to wait before discarding temporary files, "
-             "or 0 to immediately discard (hint: use -v)")
+             "or 0 to immediately discard")
 
     args = parser.parse_args()
 
