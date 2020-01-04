@@ -68,8 +68,8 @@ On Mac with Homebrew (untested)
 3.  If this is the first time that you ``pip3 install --user`` something, then close your terminal and open a new one. (This is to refresh the ``PATH``.)
 4.  Run with ``diff-pdf-visually``. 
 
-On Windows (untested)
----------------------
+On Windows Subsystem for Linux
+------------------------------
 
 I've never tried but I think this will work. Give it a go and let me know (at bram at bram dot xyz) if it worked! Unfortunately it takes quite a while to get everything installed.
 
@@ -80,6 +80,16 @@ I've never tried but I think this will work. Give it a go and let me know (at br
 3. Now proceed with the Ubuntu Linux instructions.
 
 Let me know (at bram at bram dot xyz) if this worked!
+
+On Windows native
+-----------------
+
+Lars Olafsson suggested that the following might work:
+
+- Install ``diff-pdf-visually`` via Pip.
+- Install ImageMagick, e.g. via https://imagemagick.org/script/download.php
+- Download pdftocairo/Poppler, e.g. the old Windows build produced by Todd Hubers and Ilya Kitaev: https://blog.alivate.com.au/poppler-windows/ . Extract the .7z file somewhere and update the Windows ``Path`` variable to add the ``bin`` folder that was extracted.
+- Run ``diff-pdf-visually``.
 
 How it works
 ============
