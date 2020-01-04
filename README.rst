@@ -117,6 +117,10 @@ There are some options that you can use either from the command line or from Pyt
 
 These "temporary files" include a PNG image of where any differences are, per page, as well as the log output of ImageMagick. If you want to get a feeling for thresholds, there are some example PDFs in the ``tests/`` directory.
 
+There is also an environment variable: 
+
+- ``COMPARE``: override the path of ImageMagick compare. By default, we try first ``compare`` and then ``magick compare`` (for Windows).
+
 So what do you use this for?
 ============================
 

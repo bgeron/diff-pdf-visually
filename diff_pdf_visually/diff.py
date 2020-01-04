@@ -14,6 +14,9 @@ from .constants import VERB_PRINT_REASON, VERB_PRINT_TMPDIR
 from .constants import VERB_PERPAGE, VERB_PRINT_CMD, VERB_ROUGH_PROGRESS
 from .constants import DEFAULT_NUM_THREADS, MAX_REPORT_PAGENOS
 
+from . import external_programs
+from .external_programs import verbose_run
+
 
 def pdftopng(sourcepath, destdir, basename, verbosity, dpi):
     """
@@ -54,7 +57,8 @@ def imgdiff(a, b, diff, log, print_cmds):
     with log.open("wb") as f:
         cmdresult = verbose_run(
             print_cmds,
-            ["compare", "-verbose", "-metric", "PSNR", str(a), str(b), str(diff),],
+            external_programs.compare_cmd(print_cmds)
+            + ["-verbose", "-metric", "PSNR", str(a), str(b), str(diff),],
             stdout=f,
             stderr=subprocess.STDOUT,
         )
@@ -183,9 +187,3 @@ def pdfdiff(
             print(" done.")
 
         return not significant
-
-
-def verbose_run(print_cmd, args, *restargs, **kw):
-    if print_cmd:
-        print("  Running: {}".format(" ".join(args)), file=sys.stderr)
-    return subprocess.run(args, *restargs, **kw)
