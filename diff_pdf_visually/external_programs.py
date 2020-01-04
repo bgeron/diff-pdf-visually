@@ -1,6 +1,7 @@
 # Find the right command to use for a program.
 
 import os, sys, subprocess
+from subprocess import DEVNULL
 from typing import List
 
 _COMPARE_CMD = None
@@ -28,7 +29,9 @@ def compare_cmd(print_cmds: bool) -> List[str]:
             continue
         attempt_cmd = attempt.split(" ")
         try:
-            processresult = verbose_run(print_cmds, attempt_cmd + ["-version"])
+            processresult = verbose_run(
+                print_cmds, attempt_cmd + ["-version"], stdout=DEVNULL, stderr=DEVNULL
+            )
         except FileNotFoundError:
             continue
         else:
