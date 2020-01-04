@@ -66,8 +66,8 @@ def imgdiff(a, b, diff, log, print_cmds):
     PREF='    all: '
     all_line = [l for l in lines if l.startswith(PREF)]
     assert len(all_line) == 1
-    all_str = all_line[0][len(PREF):].strip()
-    all_num = INFINITY if all_str == '0' else float(all_str)
+    all_str = all_line[0][len(PREF) :].strip()
+    all_num = INFINITY if (all_str == "0" or all_str == "1.#INF") else float(all_str)
     return all_num
 
 def pdfdiff(a, b,
