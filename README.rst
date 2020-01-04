@@ -49,7 +49,7 @@ Or use it from the command line:
 How to install this
 ===================
 
-You can install this tool with ``pip3``, but we need the ImageMagick and Poppler programs. 
+You can install this tool with ``pip3``, but we need the ImageMagick and Poppler programs.
 
 On Ubuntu Linux
 ---------------
@@ -58,15 +58,15 @@ On Ubuntu Linux
 2.  ``sudo apt install python3-pip imagemagick poppler-utils``
 3.  ``pip3 install --user diff-pdf-visually``
 4.  If this is the first time that you ``pip3 install --user`` something, then log out totally from Linux and log in again. (This is to refresh the ``PATH``.)
-5.  Run with ``diff-pdf-visually``. 
+5.  Run with ``diff-pdf-visually``.
 
 On Mac with Homebrew (untested)
 -------------------------------
 
-1.  Run ``brew install poppler imagemagick``. 
+1.  Run ``brew install poppler imagemagick``.
 2.  ``pip3 install --user diff-pdf-visually``
 3.  If this is the first time that you ``pip3 install --user`` something, then close your terminal and open a new one. (This is to refresh the ``PATH``.)
-4.  Run with ``diff-pdf-visually``. 
+4.  Run with ``diff-pdf-visually``.
 
 On Windows Subsystem for Linux
 ------------------------------
@@ -127,7 +127,7 @@ There are some options that you can use either from the command line or from Pyt
 
 These "temporary files" include a PNG image of where any differences are, per page, as well as the log output of ImageMagick. If you want to get a feeling for thresholds, there are some example PDFs in the ``tests/`` directory.
 
-There is also an environment variable: 
+There is also an environment variable:
 
 - ``COMPARE``: override the path of ImageMagick compare. By default, we try first ``compare`` and then ``magick compare`` (for Windows).
 
