@@ -5,3 +5,5 @@
 __pycache__
 dist
 .mypy_cache
+node_modules
+.vscode
