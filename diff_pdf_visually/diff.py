@@ -54,7 +54,7 @@ def imgdiff(a, b, diff, log, print_cmds):
     assert not diff.exists()
     assert not log.exists()
 
-    with log.open("wb") as f:
+    with log.open("w+b") as f:
         cmdresult = verbose_run(
             print_cmds,
             external_programs.compare_cmd(print_cmds)
