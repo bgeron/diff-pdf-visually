@@ -9,6 +9,11 @@
 .. image:: https://img.shields.io/pypi/l/diff-pdf-visually.svg
     :target: https://pypi.python.org/pypi/diff-pdf-visually/
 
+.. image:: https://img.shields.io/badge/commitizen-friendly-brightgreen.svg
+    :alt: Commitizen friendly
+    :target: https://commitizen.github.io/cz-cli/
+
+
 This script checks whether two PDFs are visually the same. So:
 
 - White text on a white background will be **ignored**.
