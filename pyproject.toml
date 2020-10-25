@@ -1,6 +1,5 @@
 [metadata]
 name = 'diff-pdf-visually'
-version = '1.4.1'
 description = 'Quickly check whether there is a visible difference between two PDFs, using ImageMagick and pdftocairo.'
 author = 'Bram Geron'
 author_email = 'bram@bram.xyz'
