@@ -79,8 +79,19 @@ def imgdiff(a, b, diff, log, print_cmds):
     all_num = INFINITY if (all_str == "0" or all_str == "1.#INF") else float(all_str)
     return all_num
 
+def pdfdiff(a, b, **kw):
+    """
+    Return True if the PDFs are sufficiently similar.
 
-def pdfdiff(
+    The name of this function is slightly confusing: it returns whether the
+    PDFs are *not* different.
+
+    The optional arguments to this function can be found on pdfdiff_pages.
+    """
+
+    return len(pdfdiff_pages(a, b, **kw)) == 0
+
+def pdfdiff_pages(
     a,
     b,
     threshold=DEFAULT_THRESHOLD,
@@ -91,10 +102,10 @@ def pdfdiff(
     max_report_pagenos=MAX_REPORT_PAGENOS,
 ):
     """
-    Return True if the PDFs are sufficiently similar.
+    Find visual differences between two PDFs; return the page numbers with
+    significant differences.
 
-    The name of this function is slightly confusing: it returns whether the
-    PDFs are *not* different.
+    When the number of pages is different between the PDFs, then return [-1].
     """
 
     assert os.path.isfile(a), "file {} must exist".format(a)
@@ -122,7 +133,7 @@ def pdfdiff(
             ), "mishap with weird page numbers: {} vs {}".format(a_i, b_i)
             if verbosity >= VERB_PRINT_REASON:
                 print("Different number of pages: {} vs {}".format(len(a_i), len(b_i)))
-            return False
+            return [-1]
         assert len(a_i) > 0
 
         if verbosity >= VERB_ROUGH_PROGRESS:
@@ -186,4 +197,4 @@ def pdfdiff(
             time.sleep(time_to_inspect)
             print(" done.")
 
-        return not significant
+        return list(map(lambda pair: pair[1], largest_significances))
