@@ -1,19 +1,18 @@
-[tool.poetry]
-name = "diff-pdf-visually"
-version = "1.4.1"
-description = "Quickly check whether there is a visible difference between two PDFs, using ImageMagick and pdftocairo."
-authors = ["Bram Geron <bram@bram.xyz>"]
-license = "MIT"
+[metadata]
+name = 'diff-pdf-visually'
+version = '1.4.1'
+description = 'Quickly check whether there is a visible difference between two PDFs, using ImageMagick and pdftocairo.'
+author = 'Bram Geron'
+author_email = 'bram@bram.xyz'
+license = 'MIT/Apache-2.0'
 readme = "README.rst"
-homepage = "https://github.com/bgeron/diff-pdf-visually"
-repository = "https://github.com/bgeron/diff-pdf-visually"
+url = 'https://github.com/bgeron/diff-pdf-visually'
 
-[tool.poetry.dependencies]
-python = "^3.0"
+[requires]
+python_version = ['3.6', '3.7', '3.8', ]
 
-[tool.poetry.dev-dependencies]
-pytest = "^3.0"
-mypy = "*"
+[build-system]
+requires = ['setuptools', 'wheel']
 
-[tool.poetry.scripts]
-diff-pdf-visually = 'diff_pdf_visually:__main__.main'
+[tool.hatch.commands]
+prerelease = 'hatch build'

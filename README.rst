@@ -14,6 +14,10 @@
     :target: https://commitizen.github.io/cz-cli/
 
 
+.. contents:: **Table of Contents**
+    :backlinks: none
+
+
 This script checks whether two PDFs are visually the same. So:
 
 - White text on a white background will be **ignored**.
@@ -141,5 +145,11 @@ Status
 
 At the moment, this program/module works best for finding *whether* two PDFs are visually different.
 
-This project is licenced under the MIT licence. It will not work on Python 2.
+This project will not work on Python 2.
 
+The code is dual-licenced under both
+
+- `MIT License <https://choosealicense.com/licenses/mit>`_
+- `Apache License, Version 2.0 <https://choosealicense.com/licenses/apache-2.0>`_
+
+at your option.
