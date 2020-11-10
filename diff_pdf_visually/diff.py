@@ -163,7 +163,7 @@ def pdfdiff_pages(
         largest_significances = sorted(
             (sgf, pageno_minus_one + 1)
             for (pageno_minus_one, sgf) in enumerate(significances)
-            if sgf < INFINITY
+            if sgf < threshold
         )
 
         if verbosity >= VERB_PRINT_REASON:
