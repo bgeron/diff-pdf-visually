@@ -13,6 +13,5 @@ def test_examples():
     assert [-1] == pdfdiff_pages("tests/base.pdf", "tests/base_twice.pdf",
         verbosity=0)
     assert [2, 1] == pdfdiff_pages("tests/complex_1.pdf", "tests/complex_2.pdf",
-        verbosity=0, threashold=100)
     assert [] == pdfdiff_pages("tests/complex_1.pdf", "tests/complex_2.pdf",
-        verbosity=0, threashold=10)
+        verbosity=0, threshold=10)
