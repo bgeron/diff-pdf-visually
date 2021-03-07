@@ -9,6 +9,7 @@ INFINITY = float("inf")
 
 import os.path, pathlib, subprocess, sys, tempfile, time
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import nullcontext
 from .constants import DEFAULT_THRESHOLD, DEFAULT_VERBOSITY, DEFAULT_DPI
 from .constants import VERB_PRINT_REASON, VERB_PRINT_TMPDIR
 from .constants import VERB_PERPAGE, VERB_PRINT_CMD, VERB_ROUGH_PROGRESS
@@ -97,6 +98,7 @@ def pdfdiff_pages(
     threshold=DEFAULT_THRESHOLD,
     verbosity=DEFAULT_VERBOSITY,
     dpi=DEFAULT_DPI,
+    tempdir=None,
     time_to_inspect=0,
     num_threads=DEFAULT_NUM_THREADS,
     max_report_pagenos=MAX_REPORT_PAGENOS,
@@ -106,13 +108,40 @@ def pdfdiff_pages(
     significant differences.
 
     When the number of pages is different between the PDFs, then return [-1].
+
+    Keyword arguments:
+
+    tempdir: if not None, then this should be a pathlib.Path for an empty writable
+        directory where we will put temporary files, which help the user understand
+        where differences are and what led to the conclusion on whether the two
+        PDF files are significantly different.
+
+        The layout of this directory is not guaranteed to remain stable across
+        releases of diff_pdf_visually, but it may contain an image for each page of
+        either PDF, and an image for the difference, and a text log.
+
+    time_to_inspect: after computing the diff, wait for this many seconds before
+        removing the temporary directory (if tempdir was not specified) and
+        returning from the function. If tempdir was specified, then we will not
+        remove the directory.
     """
 
     assert os.path.isfile(a), "file {} must exist".format(a)
     assert os.path.isfile(b), "file {} must exist".format(b)
 
-    with tempfile.TemporaryDirectory(prefix="diffpdf") as d:
-        p = pathlib.Path(d)
+    if tempdir == None:
+        path_context = tempfile.TemporaryDirectory(prefix="diffpdf")
+    else:
+        assert isinstance(tempdir, pathlib.Path)
+        assert tempdir.is_dir()
+        assert list(tempdir.glob('*')) == [], "should be empty"
+        path_context = nullcontext(tempdir)
+
+    with path_context as p:
+        if not isinstance(p, pathlib.Path):
+            # The TemporaryDirectory context manager returns a string
+            p = pathlib.Path(p)
+
         if verbosity >= VERB_PRINT_TMPDIR:
             print("  Temporary directory: {}".format(p))
         if verbosity >= VERB_ROUGH_PROGRESS:
