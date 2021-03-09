@@ -9,7 +9,6 @@ INFINITY = float("inf")
 
 import os.path, pathlib, subprocess, sys, tempfile, time
 from concurrent.futures import ThreadPoolExecutor
-from contextlib import nullcontext
 from .constants import DEFAULT_THRESHOLD, DEFAULT_VERBOSITY, DEFAULT_DPI
 from .constants import VERB_PRINT_REASON, VERB_PRINT_TMPDIR
 from .constants import VERB_PERPAGE, VERB_PRINT_CMD, VERB_ROUGH_PROGRESS
@@ -111,7 +110,7 @@ def pdfdiff_pages(
 
     Keyword arguments:
 
-    tempdir: if not None, then this should be a pathlib.Path for an empty writable
+    tempdir: if not None, then this should be a str or a pathlib.Path for an empty writable
         directory where we will put temporary files, which help the user understand
         where differences are and what led to the conclusion on whether the two
         PDF files are significantly different.
@@ -129,18 +128,16 @@ def pdfdiff_pages(
     assert os.path.isfile(a), "file {} must exist".format(a)
     assert os.path.isfile(b), "file {} must exist".format(b)
 
-    if tempdir == None:
+    if tempdir is None:
         path_context = tempfile.TemporaryDirectory(prefix="diffpdf")
     else:
-        assert isinstance(tempdir, pathlib.Path)
-        assert tempdir.is_dir()
-        assert list(tempdir.glob('*')) == [], "should be empty"
-        path_context = nullcontext(tempdir)
+        path_context = pathlib.Path(tempdir)
+        assert path_context.is_dir()
+        assert list(path_context.glob('*')) == [], "should be empty"
 
     with path_context as p:
-        if not isinstance(p, pathlib.Path):
-            # The TemporaryDirectory context manager returns a string
-            p = pathlib.Path(p)
+        # The TemporaryDirectory context manager returns a string
+        p = pathlib.Path(p)
 
         if verbosity >= VERB_PRINT_TMPDIR:
             print("  Temporary directory: {}".format(p))
