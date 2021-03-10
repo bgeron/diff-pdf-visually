@@ -9,7 +9,7 @@ INFINITY = float("inf")
 
 import os.path, pathlib, subprocess, sys, tempfile, time
 from concurrent.futures import ThreadPoolExecutor
-from contextlib import nullcontext
+from .polyfill import nullcontext
 from .constants import DEFAULT_THRESHOLD, DEFAULT_VERBOSITY, DEFAULT_DPI
 from .constants import VERB_PRINT_REASON, VERB_PRINT_TMPDIR
 from .constants import VERB_PERPAGE, VERB_PRINT_CMD, VERB_ROUGH_PROGRESS
