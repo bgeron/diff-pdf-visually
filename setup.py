@@ -29,7 +29,7 @@ kwargs = {
     'author_email': 'bram@bram.xyz',
     'maintainer': 'Bram Geron',
     'maintainer_email': 'bram@bram.xyz',
-    'url': 'https://github.com/_/diff-pdf-visually',
+    'url': 'https://github.com/bgeron/diff-pdf-visually',
     'license': 'MIT/Apache-2.0',
     'classifiers': [
         'Development Status :: 4 - Beta',
