@@ -2,7 +2,7 @@
 Quickly check whether there is a visible difference between two PDFs, using ImageMagick and pdftocairo.
 """
 
-__version__ = '1.6.2'
+__version__ = '1.6.3'
 
 from typing import List
 
