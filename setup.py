@@ -47,7 +47,9 @@ kwargs = {
     'install_requires': REQUIRES,
     'tests_require': ['coverage', 'pytest'],
     'packages': find_packages(exclude=('tests', 'tests.*')),
-
+    'entry_points': {
+        'console_scripts': ['diff-pdf-visually=diff_pdf_visually.__main__:main'],
+    },
 }
 
 #################### BEGIN USER OVERRIDES ####################
