@@ -3,6 +3,7 @@ from . import pdfdiff
 
 from .constants import DEFAULT_THRESHOLD, DEFAULT_VERBOSITY, DEFAULT_DPI
 from .constants import MAX_VERBOSITY, VERB_WARN_SANITY
+import diff_pdf_visually
 
 def main():
 
@@ -49,6 +50,9 @@ def main():
         type=int,
         help="number of seconds to wait before discarding temporary files, "
              "or 0 to immediately discard")
+    parser.add_argument('--version',
+        action='version',
+        version=f"%(prog)s {diff_pdf_visually.__version__}")
 
     args = parser.parse_args()
 
