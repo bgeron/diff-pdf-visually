@@ -80,17 +80,24 @@ def imgdiff(a, b, diff, log, print_cmds):
     all_num = INFINITY if (all_str == "0" or all_str == "1.#INF") else float(all_str)
     return all_num
 
-def pdfdiff(a, b, **kw):
+
+
+def pdf_similar(a, b, **kw):
     """
     Return True if the PDFs are sufficiently similar.
-
-    The name of this function is slightly confusing: it returns whether the
-    PDFs are *not* different.
 
     The optional arguments to this function can be found on pdfdiff_pages.
     """
 
     return len(pdfdiff_pages(a, b, **kw)) == 0
+def pdfdiff(*args, **kw):
+    """
+    DEPRECATED: THIS FUNCTION HAS A VERY CONFUSING NAME.
+    Alias for pdf_similar.
+    """
+    import warnings
+    warnings.warn('pdfdiff was renamed to pdf_similar', DeprecationWarning)
+    return pdf_similar(*args, **kw)
 
 def pdfdiff_pages(
     a,

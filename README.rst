@@ -37,10 +37,10 @@ The strength of this script is that it's simple to use on the command line, and 
 
 .. code-block:: python
 
-    from diff_pdf_visually import pdfdiff
+    from diff_pdf_visually import pdf_similar
 
     # Returns True or False
-    pdfdiff("a.pdf", "b.pdf")
+    pdf_similar("a.pdf", "b.pdf")
 
 Or use it from the command line:
 

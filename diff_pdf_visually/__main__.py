@@ -1,5 +1,5 @@
 import argparse, sys
-from . import pdfdiff
+from . import pdf_similar
 
 from .constants import DEFAULT_THRESHOLD, DEFAULT_VERBOSITY, DEFAULT_DPI
 from .constants import MAX_VERBOSITY, VERB_WARN_SANITY
@@ -67,7 +67,7 @@ def main():
         if not args.b[-4:].lower() == ".pdf":
             print("Warning: {!r} does not end in .pdf.".format(args.b))
 
-    if pdfdiff(args.a, args.b,
+    if pdf_similar(args.a, args.b,
             verbosity=verbosity,
             threshold=args.threshold,
             dpi=args.dpi,
