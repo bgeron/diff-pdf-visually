@@ -64,13 +64,14 @@ On Ubuntu Linux
 4.  If this is the first time that you ``pip3 install --user`` something, then log out totally from Linux and log in again. (This is to refresh the ``PATH``.)
 5.  Run with ``diff-pdf-visually``.
 
-On Mac with Homebrew (untested)
+On Mac with Homebrew
 -------------------------------
 
 1.  Run ``brew install poppler imagemagick``.
-2.  ``pip3 install --user diff-pdf-visually``
-3.  If this is the first time that you ``pip3 install --user`` something, then close your terminal and open a new one. (This is to refresh the ``PATH``.)
-4.  Run with ``diff-pdf-visually``.
+2. Extend your shellrc to extend `PATH` (``export PATH="/opt/homebrew/opt/imagemagick/bin:$PATH"``) and set ``MAGICK_HOME`` (``export MAGICK_HOME=/opt/homebrew/opt/imagemagick/``)
+3.  ``pip3 install --user diff-pdf-visually``
+4.  If this is the first time that you ``pip3 install --user`` something, then close your terminal and open a new one. (This is to refresh the ``PATH``.)
+5.  Run with ``diff-pdf-visually``.
 
 On Windows Subsystem for Linux
 ------------------------------
