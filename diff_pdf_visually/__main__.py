@@ -1,4 +1,5 @@
 import argparse, sys
+from pathlib import Path
 from . import pdf_similar
 
 from .constants import DEFAULT_THRESHOLD, DEFAULT_VERBOSITY, DEFAULT_DPI
@@ -45,6 +46,11 @@ def main():
         default=DEFAULT_DPI,
         type=int,
         help="resolution for the rasterised files (default: %(default)s)")
+    parser.add_argument('--tempdir',
+        default=None,
+        type=Path,
+        help="temporary directory to hold files for comparison,"
+             "can be persisted for N seconds using --time")
     parser.add_argument('--time',
         default=0,
         type=int,
@@ -71,6 +77,7 @@ def main():
             verbosity=verbosity,
             threshold=args.threshold,
             dpi=args.dpi,
+            tempdir=args.tempdir,
             time_to_inspect=args.time):
         sys.exit(0)
     else:
