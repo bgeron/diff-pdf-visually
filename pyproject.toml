@@ -9,7 +9,7 @@ urls.Source = 'https://github.com/bgeron/diff-pdf-visually'
 dynamic = ["version"]
 
 [requires]
-python_version = ['3.6', '3.7', '3.8', '3.9']
+python_version = ['3.6', '3.7', '3.8', '3.9', '3.10']
 
 [build-system]
 requires = ['hatchling']
