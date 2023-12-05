@@ -137,11 +137,13 @@ def pdfdiff_pages(
     assert os.path.isfile(b), "file {} must exist".format(b)
 
     if tempdir == None:
-        path_context = tempfile.TemporaryDirectory(prefix="diffpdf")
+        path_context = tempfile.TemporaryDirectory(prefix="diffpdf-")
     else:
         assert isinstance(tempdir, pathlib.Path)
-        assert tempdir.is_dir()
-        assert list(tempdir.glob('*')) == [], "should be empty"
+        assert tempdir.is_dir(), \
+            f"Temporary directory {tempdir} should be an existing directory"
+        assert list(tempdir.glob('*')) == [], \
+            f"temporary directory {tempdir} should be empty at the start"
         path_context = nullcontext(tempdir)
 
     with path_context as p:

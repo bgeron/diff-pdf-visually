@@ -46,16 +46,15 @@ def main():
         default=DEFAULT_DPI,
         type=int,
         help="resolution for the rasterised files (default: %(default)s)")
-    parser.add_argument('--tempdir',
+    parser.add_argument('--outdir',
         default=None,
         type=Path,
-        help="temporary directory to hold files for comparison,"
-             "can be persisted for N seconds using --time")
+        help="empty output directory to hold intermediate files for comparison")
     parser.add_argument('--time',
         default=0,
         type=int,
-        help="number of seconds to wait before discarding temporary files, "
-             "or 0 to immediately discard")
+        help="number of seconds to wait before discarding intermediate files from"
+             "temporary directory, or 0 to immediately discard. Conflicts with --outdir")
     parser.add_argument('--version',
         action='version',
         version=f"%(prog)s {diff_pdf_visually.__version__}")
@@ -73,11 +72,14 @@ def main():
         if not args.b[-4:].lower() == ".pdf":
             print("Warning: {!r} does not end in .pdf.".format(args.b))
 
+    if args.outdir and args.time:
+        raise ValueError("--time is only for keeping files in a temporary directory. If you specify --outdir, you cannot specify --time")
+
     if pdf_similar(args.a, args.b,
             verbosity=verbosity,
             threshold=args.threshold,
             dpi=args.dpi,
-            tempdir=args.tempdir,
+            tempdir=args.outdir,
             time_to_inspect=args.time):
         sys.exit(0)
     else:
