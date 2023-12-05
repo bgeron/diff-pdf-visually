@@ -1,17 +1,22 @@
-[metadata]
+[project]
 name = 'diff-pdf-visually'
 description = 'Quickly check whether there is a visible difference between two PDFs, using ImageMagick and pdftocairo.'
-author = 'Bram Geron'
-author_email = 'bram@bram.xyz'
-license = 'MIT/Apache-2.0'
+authors = [{name = 'Bram Geron', email = 'bram@bram.xyz'}]
+license = {text = 'MIT/Apache-2.0'}
 readme = "README.rst"
-url = 'https://github.com/bgeron/diff-pdf-visually'
+urls.Homepage = 'https://github.com/bgeron/diff-pdf-visually'
+urls.Source = 'https://github.com/bgeron/diff-pdf-visually'
+dynamic = ["version"]
 
 [requires]
 python_version = ['3.6', '3.7', '3.8', '3.9']
 
 [build-system]
-requires = ['setuptools', 'wheel']
+requires = ['hatchling']
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = 'diff_pdf_visually/__init__.py'
 
 [tool.hatch.commands]
 prerelease = 'hatch build'
