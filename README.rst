@@ -9,6 +9,9 @@
 .. image:: https://img.shields.io/pypi/l/diff-pdf-visually.svg
     :target: https://pypi.python.org/pypi/diff-pdf-visually/
 
+.. image:: https://colab.research.google.com/assets/colab-badge.svg
+    :target: https://colab.research.google.com/drive/1cmH2VQe01XhRnMfJwuPTrd_4FP2UGcrk?usp=sharing
+
 .. contents:: **Table of Contents**
     :backlinks: none
 
