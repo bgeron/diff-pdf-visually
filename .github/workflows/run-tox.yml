@@ -1,0 +1,48 @@
+name: Run all tox jobs using Python3
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  tests:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Cache APT Packages
+      uses: awalsh128/cache-apt-pkgs-action@latest
+      with:
+        packages: imagemagick
+        version: 1.0
+        execute_install_scripts: true
+    - name: Run tox
+      run: |
+        python -m pip install --upgrade pip setuptools
+        pip install tox-gh-actions
+        tox
+    - name: JUnit Report Action
+      uses: mikepenz/action-junit-report@v4
+      if: always() # always run even if the previous step fails
+      with:
+        report_paths: 'reports/pytest-*.xml'
+    - name: Upload test artifacts
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: tests-${{ matrix.python-version }}
+        retention-days: 4
+        path: |
+          .tox/py*/tmp
+          reports

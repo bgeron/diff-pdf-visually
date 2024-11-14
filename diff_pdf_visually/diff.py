@@ -9,11 +9,10 @@ INFINITY = float("inf")
 
 import os.path, pathlib, subprocess, sys, tempfile, time
 from concurrent.futures import ThreadPoolExecutor
+from . import constants
 from .polyfill import nullcontext
-from .constants import DEFAULT_THRESHOLD, DEFAULT_VERBOSITY, DEFAULT_DPI
 from .constants import VERB_PRINT_REASON, VERB_PRINT_TMPDIR
 from .constants import VERB_PERPAGE, VERB_PRINT_CMD, VERB_ROUGH_PROGRESS
-from .constants import DEFAULT_NUM_THREADS, MAX_REPORT_PAGENOS
 
 from . import external_programs
 from .external_programs import verbose_run
@@ -28,7 +27,7 @@ def pdftopng(sourcepath, destdir, basename, verbosity, dpi):
         raise ValueError("destdir not clean: " + repr(destdir))
 
     verbose_run(
-        (verbosity > VERB_PRINT_CMD),
+        (verbosity >= VERB_PRINT_CMD),
         [
             "pdftocairo",
             "-png",
@@ -102,13 +101,13 @@ def pdfdiff(*args, **kw):
 def pdfdiff_pages(
     a,
     b,
-    threshold=DEFAULT_THRESHOLD,
-    verbosity=DEFAULT_VERBOSITY,
-    dpi=DEFAULT_DPI,
+    threshold=None,
+    verbosity=None,
+    dpi=None,
     tempdir=None,
     time_to_inspect=0,
-    num_threads=DEFAULT_NUM_THREADS,
-    max_report_pagenos=MAX_REPORT_PAGENOS,
+    num_threads=None,
+    max_report_pagenos=None,
 ):
     """
     Find visual differences between two PDFs; return the page numbers with
@@ -135,6 +134,17 @@ def pdfdiff_pages(
 
     assert os.path.isfile(a), "file {} must exist".format(a)
     assert os.path.isfile(b), "file {} must exist".format(b)
+
+    if threshold is None:
+        threshold = constants.DEFAULT_THRESHOLD
+    if verbosity is None:
+        verbosity = constants.DEFAULT_VERBOSITY
+    if dpi is None:
+        dpi = constants.DEFAULT_DPI
+    if num_threads is None:
+        num_threads = constants.DEFAULT_NUM_THREADS
+    if max_report_pagenos is None:
+        max_report_pagenos = constants.MAX_REPORT_PAGENOS
 
     if tempdir == None:
         path_context = tempfile.TemporaryDirectory(prefix="diffpdf-")
@@ -188,7 +198,7 @@ def pdfdiff_pages(
             diffpath = p / "diff-{}.png".format(pageno)
             logpath = p / "log-{}.txt".format(pageno)
             s = imgdiff(
-                pageapath, pagebpath, diffpath, logpath, (verbosity > VERB_PRINT_CMD)
+                pageapath, pagebpath, diffpath, logpath, (verbosity >= VERB_PRINT_CMD)
             )
             if verbosity >= VERB_PERPAGE:
                 print("- Page {}: significance={}".format(pageno, s))
