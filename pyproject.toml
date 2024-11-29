@@ -1,12 +1,44 @@
 [project]
-name = 'diff-pdf-visually'
-description = 'Quickly check whether there is a visible difference between two PDFs, using ImageMagick and pdftocairo.'
-authors = [{name = 'Bram Geron', email = 'bram@bram.xyz'}]
-license = {text = 'MIT/Apache-2.0'}
+name = "diff-pdf-visually"
+description = "Quickly check whether there is a visible difference between two PDFs, using ImageMagick and pdftocairo."
 readme = "README.rst"
-urls.Homepage = 'https://github.com/bgeron/diff-pdf-visually'
-urls.Source = 'https://github.com/bgeron/diff-pdf-visually'
+authors = [{name = "Bram Geron", email = "bram@bram.xyz"}]
+maintainers = [{name = "Bram Geron", email = "bram@bram.xyz"}]
+license = {text = "MIT/Apache-2.0"}
+classifiers = [
+    'Development Status :: 4 - Beta',
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: MIT License',
+    'License :: OSI Approved :: Apache Software License',
+    'Natural Language :: English',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: Implementation :: CPython',
+    'Programming Language :: Python :: Implementation :: PyPy',
+]
+dependencies = []
+requires-python = ">=3.6"
 dynamic = ["version"]
+
+[project.optional-dependencies]
+test = [
+    "coverage",
+    "pytest",
+]
+
+[project.urls]
+Homepage = "https://github.com/bgeron/diff-pdf-visually"
+Source = "https://github.com/bgeron/diff-pdf-visually"
+
+[project.scripts]
+diff-pdf-visually = "diff_pdf_visually.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["diff_pdf_visually*"]
 
 [requires]
 python_version = ['3.6', '3.7', '3.8', '3.9', '3.10']
