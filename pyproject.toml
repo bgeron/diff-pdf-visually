@@ -33,7 +33,7 @@ diff-pdf-visually = "diff_pdf_visually.__main__:main"
 include = ["diff_pdf_visually*"]
 
 [requires]
-python_version = ['3.6', '3.7', '3.8', '3.9', '3.10']
+python_version = ['3.9', '3.10', '3.11', '3.12', '3.13']
 
 [build-system]
 requires = ['hatchling']
