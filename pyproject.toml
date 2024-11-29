@@ -6,19 +6,11 @@ authors = [{name = "Bram Geron", email = "bram@bram.xyz"}]
 maintainers = [{name = "Bram Geron", email = "bram@bram.xyz"}]
 license = {text = "MIT/Apache-2.0"}
 classifiers = [
-    'Development Status :: 4 - Beta',
     'Intended Audience :: Developers',
     'License :: OSI Approved :: MIT License',
     'License :: OSI Approved :: Apache Software License',
     'Natural Language :: English',
     'Operating System :: OS Independent',
-    'Programming Language :: Python :: 3.6',
-    'Programming Language :: Python :: 3.7',
-    'Programming Language :: Python :: 3.8',
-    'Programming Language :: Python :: 3.9',
-    'Programming Language :: Python :: 3.10',
-    'Programming Language :: Python :: Implementation :: CPython',
-    'Programming Language :: Python :: Implementation :: PyPy',
 ]
 dependencies = []
 requires-python = ">=3.6"
