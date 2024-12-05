@@ -236,13 +236,16 @@ def pdfdiff_pages(
 
         if time_to_inspect > 0:
             print(
-                "Waiting for {} seconds before removing temporary directory...".format(
+                "Waiting for {} seconds (or Ctrl+C) before removing temporary directory...".format(
                     time_to_inspect
                 ),
                 end="",
                 flush=True,
             )
-            time.sleep(time_to_inspect)
+            try:
+                time.sleep(time_to_inspect)
+            except KeyboardInterrupt:
+                pass
             print(" done.")
 
         return list(map(lambda pair: pair[1], largest_significances))
