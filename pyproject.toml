@@ -4,7 +4,7 @@ description = "Quickly check whether there is a visible difference between two P
 readme = "README.rst"
 authors = [{name = "Bram Geron", email = "bram@bram.xyz"}]
 maintainers = [{name = "Bram Geron", email = "bram@bram.xyz"}]
-license = {text = "MIT/Apache-2.0"}
+license = "MIT OR Apache-2.0"
 classifiers = [
     'Intended Audience :: Developers',
     'License :: OSI Approved :: MIT License',
@@ -13,7 +13,7 @@ classifiers = [
     'Operating System :: OS Independent',
 ]
 dependencies = []
-requires-python = ">=3.6"
+requires-python = ">=3.8"
 dynamic = ["version"]
 
 [project.optional-dependencies]
@@ -29,14 +29,11 @@ Source = "https://github.com/bgeron/diff-pdf-visually"
 [project.scripts]
 diff-pdf-visually = "diff_pdf_visually.__main__:main"
 
-[tool.setuptools.packages.find]
-include = ["diff_pdf_visually*"]
-
 [requires]
 python_version = ['3.9', '3.10', '3.11', '3.12', '3.13']
 
 [build-system]
-requires = ['hatchling']
+requires = ['hatchling>=1.26.1']
 build-backend = "hatchling.build"
 
 [tool.hatch.version]
