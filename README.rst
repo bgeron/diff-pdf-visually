@@ -152,6 +152,6 @@ at your option.
 Supported Python versions
 -------------------------
 
-The versions that are regularly tested can be found `here <https://github.com/bgeron/diff-pdf-visually/blob/main/tox.ini>`_, that's probably Python 3.8 and Python 3.9.
+The versions that are regularly tested can be found `here <https://github.com/bgeron/diff-pdf-visually/blob/main/tox.ini>`_, that's probably Python 3.9-3.13.
 
 For your convenience we declare more Python versions acceptable in ``pyproject.toml``, but the non-tested versions could potentially break from time to time. My goal is to support basically Python 3.x; please let me know if something doesn't work on an older version.
