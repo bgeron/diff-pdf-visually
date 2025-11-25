@@ -2,7 +2,7 @@ import argparse, sys
 from pathlib import Path
 from . import pdf_similar
 
-from .constants import DEFAULT_THRESHOLD, DEFAULT_VERBOSITY, DEFAULT_DPI
+from .constants import DEFAULT_THRESHOLD_RATIO, DEFAULT_VERBOSITY, DEFAULT_DPI
 from .constants import MAX_VERBOSITY, VERB_WARN_SANITY
 import diff_pdf_visually
 
@@ -37,10 +37,10 @@ def main():
         default=0,
         help="show more information (can be used {} times)".format(
             MAX_VERBOSITY - DEFAULT_VERBOSITY))
-    parser.add_argument('--threshold',
-        default=DEFAULT_THRESHOLD,
+    parser.add_argument('--threshold-ratio',
+        default=DEFAULT_THRESHOLD_RATIO,
         type=float,
-        help="PSNR threshold to consider a change significant, "
+        help="PSNR threshold to consider a change significant, in terms of a ratio from 0 to 1,"
              "higher is more sensitive (default: %(default)s)")
     parser.add_argument('--dpi',
         default=DEFAULT_DPI,
@@ -77,7 +77,7 @@ def main():
 
     if pdf_similar(args.a, args.b,
             verbosity=verbosity,
-            threshold=args.threshold,
+            threshold_ratio=args.threshold_ratio,
             dpi=args.dpi,
             tempdir=args.outdir,
             time_to_inspect=args.time):

@@ -1,7 +1,10 @@
 INFINITY = float('inf')
 
-# Default threshold: lower means to ignore more.
-DEFAULT_THRESHOLD = 100
+# Default threshold: higher means to ignore more.
+#
+# A threshold of 0.95 is very sensitive. A threshold
+# of 0.2 is very insensitive.
+DEFAULT_THRESHOLD_RATIO = 0.95
 # Default verbosity. Zero means quiet.
 DEFAULT_VERBOSITY = 1
 MAX_VERBOSITY = 3

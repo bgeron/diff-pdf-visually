@@ -14,8 +14,9 @@ from .polyfill import nullcontext
 from .constants import VERB_PRINT_REASON, VERB_PRINT_TMPDIR
 from .constants import VERB_PERPAGE, VERB_PRINT_CMD, VERB_ROUGH_PROGRESS
 
-from . import external_programs
+from . import external_programs, scale
 from .external_programs import verbose_run
+from .scale import detect_scale_for_current_imagemagick, convert_to_modern_scale
 
 
 def pdftopng(sourcepath, destdir, basename, verbosity, dpi):
@@ -47,8 +48,14 @@ def pdftopng(sourcepath, destdir, basename, verbosity, dpi):
     return [s[len(basename) + 1 : -4] for s in numbers]
 
 
-# returns a float, which can be inf
-def imgdiff(a, b, diff, log, print_cmds):
+def imgdiff_ratio(a, b, diff, log, print_cmds):
+    """
+    Compute the PSNR between two images, scaled to the modern ImageMagick scale
+    (0 = completely different, 1 = completely the same).
+
+    The numbers may not be exactly what modern ImageMagick returns, but they should
+    almost always be similar (off by ~20%)
+    """
     assert a.is_file()
     assert b.is_file()
     assert not diff.exists()
@@ -75,10 +82,16 @@ def imgdiff(a, b, diff, log, print_cmds):
     PREF = "    all: "
     all_line = [l for l in lines if l.startswith(PREF)]
     assert len(all_line) == 1
-    all_str = all_line[0][len(PREF) :].strip()
-    all_num = INFINITY if (all_str == "0" or all_str == "1.#INF") else float(all_str)
-    return all_num
+    all_str = all_line[0][len(PREF):].strip()
+    try:
+        all_num = INFINITY if (all_str == "-0" or all_str == "1.#INF") else float(all_str)
+    except ValueError:
+        raise ValueError("cannot parse PSNR, please report a bug and include this output: " + repr(all_str))
 
+    scale = detect_scale_for_current_imagemagick()
+    all_num_rescaled = convert_to_modern_scale(scale, all_num)
+
+    return all_num_rescaled
 
 
 def pdf_similar(a, b, **kw):
@@ -93,7 +106,7 @@ def pdf_similar(a, b, **kw):
 def pdfdiff_pages(
     a,
     b,
-    threshold=None,
+    threshold_ratio=None,
     verbosity=None,
     dpi=None,
     tempdir=None,
@@ -108,6 +121,15 @@ def pdfdiff_pages(
     When the number of pages is different between the PDFs, then return [-1].
 
     Keyword arguments:
+
+    threshold_ratio: if the PSNR of a pair of pages is below this, then the difference
+        is marked as significant.
+
+        The threshold should be given in the modern ImageMagick scale (0=completely different,
+        1=identical).
+        
+        If installed ImageMagick is not modern (<v7.1.2), then we run installed ImageMagick to
+        compute PSNR, followed by an approximate rescale to the range of modern ImageMagick.
 
     tempdir: if not None, then this should be a pathlib.Path for an empty writable
         directory where we will put temporary files, which help the user understand
@@ -127,8 +149,8 @@ def pdfdiff_pages(
     assert os.path.isfile(a), "file {} must exist".format(a)
     assert os.path.isfile(b), "file {} must exist".format(b)
 
-    if threshold is None:
-        threshold = constants.DEFAULT_THRESHOLD
+    if threshold_ratio is None:
+        threshold_ratio = constants.DEFAULT_THRESHOLD_RATIO
     if verbosity is None:
         verbosity = constants.DEFAULT_VERBOSITY
     if dpi is None:
@@ -181,7 +203,7 @@ def pdfdiff_pages(
                 "  PDFs have same number of pages. Checking each pair of converted images..."
             )
 
-        significances = []
+        ratios = []
 
         for pageno in a_i:
             # remember pageno is a string
@@ -189,36 +211,36 @@ def pdfdiff_pages(
             pagebpath = p / "b-{}.png".format(pageno)
             diffpath = p / "diff-{}.png".format(pageno)
             logpath = p / "log-{}.txt".format(pageno)
-            s = imgdiff(
+            ratio = imgdiff_ratio(
                 pageapath, pagebpath, diffpath, logpath, (verbosity >= VERB_PRINT_CMD)
             )
             if verbosity >= VERB_PERPAGE:
-                print("- Page {}: significance={}".format(pageno, s))
+                print("- Page {}: significance={}".format(pageno, ratio))
 
-            significances.append(s)
+            ratios.append(ratio)
 
-        min_significance = min(significances, default=INFINITY)
-        significant = min_significance <= threshold
+        min_similarity = max(ratios, default=0)
+        significant = min_similarity <= threshold_ratio
 
-        largest_significances = sorted(
-            (sgf, pageno_minus_one + 1)
-            for (pageno_minus_one, sgf) in enumerate(significances)
-            if sgf < threshold
+        least_similarities = sorted(
+            (ratio, pageno_minus_one + 1)
+            for (pageno_minus_one, ratio) in enumerate(ratios)
+            if ratio <= threshold_ratio
         )
 
         if verbosity >= VERB_PRINT_REASON:
             freetext = "different" if significant else "the same"
             print(
-                "Min sig = {}, significant?={}. The PDFs are {}.{}".format(
-                    min_significance,
+                "Lowest similarity score found = {}, significant?={}. The PDFs are {}.{}".format(
+                    min_similarity,
                     significant,
                     freetext,
                     ""
-                    if largest_significances == []
+                    if least_similarities == []
                     else " The most different pages are: {}.".format(
                         ", ".join(
                             "page {} (sgf. {})".format(pageno, sgf)
-                            for (sgf, pageno) in largest_significances[
+                            for (sgf, pageno) in least_similarities[
                                 :max_report_pagenos
                             ]
                         )
@@ -237,4 +259,4 @@ def pdfdiff_pages(
             time.sleep(time_to_inspect)
             print(" done.")
 
-        return list(map(lambda pair: pair[1], largest_significances))
+        return list(map(lambda pair: pair[1], least_similarities))

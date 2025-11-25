@@ -21,8 +21,8 @@ def compare_cmd(print_cmds: bool) -> List[str]:
     result_cmd = None
     for attempt in [
         env_compare,
-        "compare",
         "magick compare",
+        "compare",
     ]:
         # Does it work?
         if attempt == None:

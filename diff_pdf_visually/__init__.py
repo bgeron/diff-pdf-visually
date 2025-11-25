@@ -8,5 +8,5 @@ from typing import List
 
 __all__ = [] # type: List[str]
 
-from .diff import pdf_similar, pdfdiff_pages, pdfdiff
-from .diff import pdftopng, imgdiff
+from .diff import pdf_similar, pdfdiff_pages
+from .diff import pdftopng, imgdiff_ratio
