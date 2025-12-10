@@ -89,14 +89,6 @@ def pdf_similar(a, b, **kw):
     """
 
     return len(pdfdiff_pages(a, b, **kw)) == 0
-def pdfdiff(*args, **kw):
-    """
-    DEPRECATED: THIS FUNCTION HAS A VERY CONFUSING NAME.
-    Alias for pdf_similar.
-    """
-    import warnings
-    warnings.warn('pdfdiff was renamed to pdf_similar', DeprecationWarning)
-    return pdf_similar(*args, **kw)
 
 def pdfdiff_pages(
     a,
